@@ -1,0 +1,17 @@
+{
+  "name": "Công cụ tính lương",
+  "short_name": "Tính Lương",
+  "description": "Công cụ tính lương giáo viên",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffebeb",
+  "theme_color": "#00008b",
+  "icons": [
+    {
+      "src": "./icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
