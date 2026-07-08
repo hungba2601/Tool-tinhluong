@@ -123,7 +123,7 @@
             filter: brightness(1.2);
         }
         .install-btn {
-            display: none;
+            display: flex;
             width: 100%;
             padding: 0.75rem;
             margin-bottom: 1.5rem;
@@ -185,6 +185,129 @@
             font-style: italic;
             margin-top: 1.5rem;
             line-height: 1.5;
+        }
+
+        .install-modal {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 1rem;
+        }
+        .modal-content {
+            background: #fff;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+            padding: 1.5rem;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #f1f5f9;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+        }
+        .modal-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            color: #1e293b;
+            font-weight: 700;
+        }
+        .modal-warning {
+            color: #d97706;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+        .modal-desc {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 1rem;
+        }
+        .link-box {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .link-box label {
+            display: block;
+            font-size: 0.8rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+        .link-box input {
+            width: 100%;
+            border: 1px solid #cbd5e1;
+            padding: 0.5rem;
+            border-radius: 4px;
+            background: #fff;
+            color: #1e293b;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .copy-btn {
+            width: 100%;
+            background: #8b5cf6;
+            color: #fff;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+        }
+        .install-steps {
+            font-size: 0.85rem;
+            color: #334155;
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        .install-steps h4 {
+            margin: 0 0 0.5rem 0;
+            color: #1e293b;
+            font-size: 0.9rem;
+        }
+        .install-steps p {
+            margin: 0 0 0.5rem 0;
+        }
+        .modal-close-btn {
+            width: 100%;
+            background: #f1f5f9;
+            color: #475569;
+            border: none;
+            padding: 0.75rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
         }
 
         /* Giao diện Mobile */
@@ -317,51 +440,106 @@
         </div>
     </div>
 
+    <!-- Modal Hướng dẫn cài đặt -->
+    <div id="installModal" class="install-modal" style="display: none;">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <div class="modal-header">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#00008b" viewBox="0 0 16 16">
+                  <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5z"/>
+                  <path d="M7.646 11.854a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V1.5a.5.5 0 0 0-1 0v8.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3z"/>
+                </svg>
+                <h3>Cài đặt ứng dụng</h3>
+            </div>
+
+            <div class="modal-warning">
+                ⚠️ Bạn đang mở trong trình duyệt nhúng
+            </div>
+            
+            <p class="modal-desc">Trình duyệt này không hỗ trợ cài đặt trực tiếp. Vui lòng mở bằng <strong>Chrome</strong> hoặc <strong>Safari</strong> để cài app.</p>
+
+            <div class="link-box">
+                <label>Link ứng dụng:</label>
+                <input type="text" id="appLinkInput" readonly>
+            </div>
+
+            <button id="copyLinkBtn" class="copy-btn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                  <path d="M9.5 1h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                </svg>
+                Copy Link
+            </button>
+
+            <div class="install-steps">
+                <h4>📌 Cách cài đặt:</h4>
+                <p>1. Nhấn "Copy Link" ở trên.</p>
+                <p>2. Mở trình duyệt <strong>Chrome</strong> (Android) hoặc <strong>Safari</strong> (iPhone).</p>
+                <p>3. Dán link vào thanh địa chỉ và truy cập.</p>
+                <p>4. Android (Chrome): Nhấn menu 3 chấm ⋮ → "Thêm vào MH chính".</p>
+                <p>5. iPhone (Safari): Nhấn nút Chia sẻ (vuông mũi tên) → "Thêm vào MH chính".</p>
+            </div>
+
+            <button class="modal-close-btn" id="closeModalBottomBtn">Đóng</button>
+        </div>
+    </div>
+
     <script>
         // Xử lý Cài đặt App
         let deferredPrompt;
         const installBtn = document.getElementById('installBtn');
+        const installModal = document.getElementById('installModal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const closeModalBottomBtn = document.getElementById('closeModalBottomBtn');
+        const appLinkInput = document.getElementById('appLinkInput');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
 
-        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
-        const isInApp = /Zalo|FBAN|FBAV/i.test(navigator.userAgent);
-        const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+        // Lắng nghe sự kiện beforeinstallprompt
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+        });
 
-        if (isMobile && !isStandalone) {
-            installBtn.style.display = 'flex';
-            
-            if (isIOS) {
-                installBtn.addEventListener('click', () => {
-                    alert('Để cài đặt ứng dụng trên iPhone/iPad:\n1. Nhấn nút Chia sẻ (Share) ở thanh dưới cùng.\n2. Chọn "Thêm vào MH chính" (Add to Home Screen).');
-                });
-            } else {
-                window.addEventListener('beforeinstallprompt', (e) => {
-                    e.preventDefault();
-                    deferredPrompt = e;
-                });
-
-                installBtn.addEventListener('click', async () => {
-                    if (isInApp) {
-                        alert('Bạn đang xem qua Zalo/Facebook.\n\nĐể cài đặt App, vui lòng bấm vào biểu tượng 3 chấm (⋮) ở góc phải phía trên màn hình và chọn "Mở bằng trình duyệt" (Chrome, Safari...).');
-                        return;
-                    }
-                    if (deferredPrompt) {
-                        deferredPrompt.prompt();
-                        const { outcome } = await deferredPrompt.userChoice;
-                        if (outcome === 'accepted') {
-                            installBtn.style.display = 'none';
-                        }
-                        deferredPrompt = null;
-                    } else {
-                        alert('Để cài đặt App:\nVui lòng bấm vào biểu tượng 3 chấm (⋮) của trình duyệt và chọn "Cài đặt ứng dụng" (hoặc Thêm vào MH chính).');
-                    }
-                });
-
-                window.addEventListener('appinstalled', () => {
-                    installBtn.style.display = 'none';
-                });
-            }
+        function showInstallModal() {
+            appLinkInput.value = window.location.href;
+            installModal.style.display = 'flex';
         }
+
+        function hideInstallModal() {
+            installModal.style.display = 'none';
+        }
+
+        closeModalBtn.addEventListener('click', hideInstallModal);
+        closeModalBottomBtn.addEventListener('click', hideInstallModal);
+
+        copyLinkBtn.addEventListener('click', () => {
+            appLinkInput.select();
+            appLinkInput.setSelectionRange(0, 99999); // Dành cho thiết bị di động
+            navigator.clipboard.writeText(appLinkInput.value).then(() => {
+                const originalText = copyLinkBtn.innerHTML;
+                copyLinkBtn.innerHTML = '✅ Đã copy link';
+                setTimeout(() => {
+                    copyLinkBtn.innerHTML = originalText;
+                }, 2000);
+            }).catch(err => {
+                document.execCommand("copy");
+                const originalText = copyLinkBtn.innerHTML;
+                copyLinkBtn.innerHTML = '✅ Đã copy link';
+                setTimeout(() => {
+                    copyLinkBtn.innerHTML = originalText;
+                }, 2000);
+            });
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+            } else {
+                showInstallModal();
+            }
+        });
 
         const congTacObj = document.getElementById('congTacObj');
         const uuDaiRate = document.getElementById('uuDaiRate');
