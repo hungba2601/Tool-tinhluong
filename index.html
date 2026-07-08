@@ -300,6 +300,11 @@
             <input type="text" inputmode="decimal" id="uuDaiRate" class="form-control" value="40" disabled>
         </div>
 
+        <div class="input-group" style="display: flex; align-items: center; gap: 8px;">
+            <input type="checkbox" id="mienBHYT" style="width: 1.2rem; height: 1.2rem; cursor: pointer;">
+            <label class="input-label" for="mienBHYT" style="margin-bottom: 0; cursor: pointer;">Thuộc đối tượng miễn đóng BHYT</label>
+        </div>
+
         <button class="calc-btn" onclick="calculate()">TÍNH LƯƠNG</button>
 
         <div id="resultCard" class="result-card">
@@ -308,7 +313,7 @@
         
         <div id="resultNote" class="result-note" style="display: none;">
             * Công thức căn cứ theo Điều 5 NĐ 182/2026/NĐ-CP.<br>
-            * Bảo hiểm (10.5%) = 10.5% x (Lương + PC Chức vụ + PC Vượt khung + PC Thâm niên).
+            * Bảo hiểm (10.5% hoặc 9%) = Tỷ lệ x (Lương + PC Chức vụ + PC Vượt khung + PC Thâm niên).
         </div>
     </div>
 
@@ -390,6 +395,7 @@
             const vk = getVal('vuotKhung');
             const pckv = getVal('pcKhuVuc');
             const udr = getVal('uuDaiRate');
+            const isMienBHYT = document.getElementById('mienBHYT').checked;
 
             const hsVuotKhung = hsl * (vk / 100);
             const hsThamNienNghe = (hsl + pccv + hsVuotKhung) * (tnn / 100);
@@ -403,8 +409,10 @@
             const tongThuNhap = luongCoBan + phuCapChucVuValue + pcUuDai + pcThamNienNgheValue + cacPcKhac;
 
             const mucDongBH = (hsl + pccv + hsVuotKhung + hsThamNienNghe) * baseSalary;
-            const tienBaoHiem = Math.round(mucDongBH * 0.105);
+            const tyLeBaoHiem = isMienBHYT ? 0.09 : 0.105;
+            const tienBaoHiem = Math.round(mucDongBH * tyLeBaoHiem);
             const thucNhan = tongThuNhap - tienBaoHiem;
+            const bhLabel = isMienBHYT ? 'Trừ BHXH, BHTN (9%)' : 'Trừ BHXH, BHYT, BHTN (10.5%)';
 
             let html = `
                 <div class="result-row">
@@ -432,7 +440,7 @@
                     <span>${formatCurrency(tongThuNhap)}</span>
                 </div>
                 <div class="result-row deduction">
-                    <span>Trừ BHXH, BHYT (10.5%):</span>
+                    <span>${bhLabel}:</span>
                     <span>${formatCurrency(tienBaoHiem)}</span>
                 </div>
                 <div class="result-row net">
