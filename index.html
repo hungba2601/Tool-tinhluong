@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Công cụ tính lương</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f0f4f8;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .app-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 2rem 1.5rem;
+            border-radius: 12px;
+            background-color: #ffebeb;
+            border: 3px solid #00008b;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+        }
+        .title {
+            color: #ff0000;
+            text-shadow: 2px 2px 3px rgba(255, 0, 0, 0.2);
+            font-size: 2.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        .subtitle {
+            color: #008000;
+            font-size: 0.85rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+        .note {
+            color: #00008b;
+            font-size: 0.85rem;
+            font-style: italic;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #00008b;
+            margin-bottom: 0.4rem;
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.6rem 0.75rem;
+            border-radius: 6px;
+            border: 2px solid #00008b;
+            background-color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #00008b;
+            outline: none;
+            transition: box-shadow 0.15s;
+        }
+        .form-control::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+            font-weight: 400;
+        }
+        .form-control:focus {
+            box-shadow: 0 0 0 3px rgba(0, 0, 139, 0.2);
+        }
+        .form-control:disabled {
+            background-color: #f3f4f6;
+            color: #6b7280;
+        }
+        #congTacObj {
+            border: 2px solid #ff0000;
+            color: #00008b;
+            font-weight: 700;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 0.85rem;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #ffffff;
+            border-radius: 6px;
+            background-color: #00008b;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s, filter 0.1s;
+            margin-top: 0.5rem;
+        }
+        .calc-btn:active {
+            transform: translateY(2px);
+        }
+        .calc-btn:hover {
+            filter: brightness(1.2);
+        }
+        .result-card {
+            margin-top: 1.5rem;
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            border: 2px dashed #00008b;
+            display: none;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 0.85rem;
+            margin-bottom: 0.85rem;
+            border-bottom: 1px solid #c7d2fe;
+            font-size: 1.05rem;
+            color: #00008b;
+        }
+        .result-row span:last-child {
+            text-align: right;
+        }
+        .result-row.gross {
+            font-weight: 800;
+            color: #00008b;
+            border-bottom: 1px solid #c7d2fe;
+        }
+        .result-row.deduction {
+            color: #f26d6d;
+            border-bottom: 2px solid #ff0000;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-row.net {
+            font-weight: 900;
+            color: #ff0000;
+            font-size: 1.5rem;
+            border: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        .result-note {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #00008b;
+            font-style: italic;
+            margin-top: 1.5rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <h2 class="title">CÔNG CỤ TÍNH LƯƠNG</h2>
+        <p class="subtitle">Made by Nguyễn Phi Hùng- Zalo 0938750424</p>
+        <p class="note">(Công cụ mang tính tham khảo)</p>
+
+        <div class="input-group">
+            <label class="input-label">Lương cơ sở (VNĐ):</label>
+            <select id="baseSalary" class="form-control">
+                <option value="2530000">2,530,000 đ (+8% bắt đầu từ 01/07/2026)</option>
+                <option value="2340000">2,340,000 đ</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Hệ số lương:</label>
+            <input type="text" id="heSoLuong" class="form-control" placeholder="VD: 4.98 (hoặc 2.34, 3.0...)">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Hệ số Phụ cấp chức vụ (Nếu có):</label>
+            <input type="text" id="pcChucVu" class="form-control" placeholder="VD: 0.25 (Nhập 0 nếu không có)">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Phụ cấp thâm niên (số năm công tác) (%):</label>
+            <input type="text" id="thamNienNghe" class="form-control" placeholder="VD: 15 (Tương ứng 15%)">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Phụ cấp thâm niên vượt khung (%):</label>
+            <input type="text" id="vuotKhung" class="form-control" placeholder="VD: 5 (Tương ứng 5%)">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Hệ số Phụ cấp khu vực (Nếu có):</label>
+            <input type="text" id="pcKhuVuc" class="form-control" placeholder="VD: 0.1 (Nhập 0 nếu không có)">
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Công tác / Đối tượng NĐ 182:</label>
+            <select id="congTacObj" class="form-control">
+                <option value="40" selected>40% - GV THCS, THPT, TT GDTX, TT GDNN-GDTX</option>
+                <option value="45">45% - GV Mầm non, Tiểu học</option>
+                <option value="20">20% - Nhân sự hỗ trợ giáo dục</option>
+                <option value="30">30% - GV Cao đẳng, Trung cấp</option>
+                <option value="60">60% - GV PTDT Bán trú, Năng khiếu</option>
+                <option value="80">80% - CBQL Trường DTNT, Vùng KT-XH ĐBKK</option>
+                <option value="70">70% - Vùng KT-XH ĐBKK (Trừ mầm non/phổ thông)</option>
+                <option value="custom">Nhập mức % ngành riêng khác bên dưới...</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <label class="input-label">Phụ cấp ưu đãi cụ thể (%):</label>
+            <input type="number" step="0.01" id="uuDaiRate" class="form-control" value="40" disabled>
+        </div>
+
+        <button class="calc-btn" onclick="calculate()">TÍNH LƯƠNG</button>
+
+        <div id="resultCard" class="result-card">
+            <div id="resultContent"></div>
+        </div>
+        
+        <div id="resultNote" class="result-note" style="display: none;">
+            * Công thức căn cứ theo Điều 5 NĐ 182/2026/NĐ-CP.<br>
+            * Bảo hiểm (10.5%) = 10.5% x (Lương + PC Chức vụ + PC Vượt khung + PC Thâm niên).
+        </div>
+    </div>
+
+    <script>
+        const congTacObj = document.getElementById('congTacObj');
+        const uuDaiRate = document.getElementById('uuDaiRate');
+        
+        congTacObj.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                uuDaiRate.value = '';
+                uuDaiRate.disabled = false;
+                uuDaiRate.focus();
+            } else {
+                uuDaiRate.value = this.value;
+                uuDaiRate.disabled = true;
+            }
+        });
+
+        function formatCurrency(val) {
+            return new Intl.NumberFormat("vi-VN").format(val) + " đ";
+        }
+
+        function getVal(id) {
+            let val = document.getElementById(id).value;
+            val = val.replace(/,/g, '.'); // Hỗ trợ nhập dấu phẩy
+            return parseFloat(val) || 0;
+        }
+
+        function calculate() {
+            const baseSalary = getVal('baseSalary');
+            const hsl = getVal('heSoLuong');
+            const pccv = getVal('pcChucVu');
+            const tnn = getVal('thamNienNghe');
+            const vk = getVal('vuotKhung');
+            const pckv = getVal('pcKhuVuc');
+            const udr = getVal('uuDaiRate');
+
+            const hsVuotKhung = hsl * (vk / 100);
+            const hsThamNienNghe = (hsl + pccv + hsVuotKhung) * (tnn / 100);
+
+            const luongCoBan = Math.round(hsl * baseSalary);
+            const phuCapChucVuValue = Math.round(pccv * baseSalary);
+            const pcUuDai = Math.round((hsl + pccv + hsVuotKhung) * baseSalary * (udr / 100));
+            const pcThamNienNgheValue = Math.round(hsThamNienNghe * baseSalary);
+            const cacPcKhac = Math.round((hsVuotKhung + pckv) * baseSalary);
+
+            const tongThuNhap = luongCoBan + phuCapChucVuValue + pcUuDai + pcThamNienNgheValue + cacPcKhac;
+
+            const mucDongBH = (hsl + pccv + hsVuotKhung + hsThamNienNghe) * baseSalary;
+            const tienBaoHiem = Math.round(mucDongBH * 0.105);
+            const thucNhan = tongThuNhap - tienBaoHiem;
+
+            let html = `
+                <div class="result-row">
+                    <span>Lương cơ bản:</span>
+                    <span>${formatCurrency(luongCoBan)}</span>
+                </div>
+                <div class="result-row">
+                    <span>Phụ cấp chức vụ:</span>
+                    <span>${formatCurrency(phuCapChucVuValue)}</span>
+                </div>
+                <div class="result-row">
+                    <span>PC ưu đãi (NĐ 182):</span>
+                    <span>${formatCurrency(pcUuDai)}</span>
+                </div>
+                <div class="result-row">
+                    <span>PC Thâm niên nghề:</span>
+                    <span>${formatCurrency(pcThamNienNgheValue)}</span>
+                </div>
+                <div class="result-row">
+                    <span>Các PC khác (Vượt khung, Khu vực):</span>
+                    <span>${formatCurrency(cacPcKhac)}</span>
+                </div>
+                <div class="result-row gross">
+                    <span>Tổng thu nhập (Gross):</span>
+                    <span>${formatCurrency(tongThuNhap)}</span>
+                </div>
+                <div class="result-row deduction">
+                    <span>Trừ BHXH, BHYT (10.5%):</span>
+                    <span>${formatCurrency(tienBaoHiem)}</span>
+                </div>
+                <div class="result-row net">
+                    <span>THỰC NHẬN:</span>
+                    <span>${formatCurrency(thucNhan)}</span>
+                </div>
+            `;
+
+            document.getElementById('resultContent').innerHTML = html;
+            document.getElementById('resultCard').style.display = 'block';
+            document.getElementById('resultNote').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
