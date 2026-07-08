@@ -318,11 +318,14 @@
         const installBtn = document.getElementById('installBtn');
 
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+        const isInApp = /Zalo|FBAN|FBAV/i.test(navigator.userAgent);
         const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
-        if (!isStandalone) {
+        if (isMobile && !isStandalone) {
+            installBtn.style.display = 'flex';
+            
             if (isIOS) {
-                installBtn.style.display = 'flex';
                 installBtn.addEventListener('click', () => {
                     alert('Để cài đặt ứng dụng trên iPhone/iPad:\n1. Nhấn nút Chia sẻ (Share) ở thanh dưới cùng.\n2. Chọn "Thêm vào MH chính" (Add to Home Screen).');
                 });
@@ -330,10 +333,13 @@
                 window.addEventListener('beforeinstallprompt', (e) => {
                     e.preventDefault();
                     deferredPrompt = e;
-                    installBtn.style.display = 'flex';
                 });
 
                 installBtn.addEventListener('click', async () => {
+                    if (isInApp) {
+                        alert('Bạn đang xem qua Zalo/Facebook.\n\nĐể cài đặt App, vui lòng bấm vào biểu tượng 3 chấm (⋮) ở góc phải phía trên màn hình và chọn "Mở bằng trình duyệt" (Chrome).');
+                        return;
+                    }
                     if (deferredPrompt) {
                         deferredPrompt.prompt();
                         const { outcome } = await deferredPrompt.userChoice;
@@ -342,7 +348,7 @@
                         }
                         deferredPrompt = null;
                     } else {
-                        alert('Bạn có thể cài đặt bằng cách nhấn vào menu trình duyệt (3 chấm) và chọn "Cài đặt ứng dụng" (Install app).');
+                        alert('Để cài đặt App:\nVui lòng bấm vào biểu tượng 3 chấm (⋮) của trình duyệt và chọn "Cài đặt ứng dụng" (hoặc Thêm vào MH chính).');
                     }
                 });
 
