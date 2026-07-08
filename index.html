@@ -218,27 +218,27 @@
 
         <div class="input-group">
             <label class="input-label">Hệ số lương:</label>
-            <input type="text" id="heSoLuong" class="form-control" placeholder="VD: 4.98 (hoặc 2.34, 3.0...)">
+            <input type="text" inputmode="decimal" id="heSoLuong" class="form-control" placeholder="VD: 4.98 (hoặc 2.34, 3.0...)">
         </div>
 
         <div class="input-group">
             <label class="input-label">Hệ số Phụ cấp chức vụ (Nếu có):</label>
-            <input type="text" id="pcChucVu" class="form-control" placeholder="VD: 0.25 (Nhập 0 nếu không có)">
+            <input type="text" inputmode="decimal" id="pcChucVu" class="form-control" placeholder="VD: 0.25 (Nhập 0 nếu không có)">
         </div>
 
         <div class="input-group">
             <label class="input-label">Phụ cấp thâm niên (số năm công tác) (%):</label>
-            <input type="text" id="thamNienNghe" class="form-control" placeholder="VD: 15 (Tương ứng 15%)">
+            <input type="text" inputmode="decimal" id="thamNienNghe" class="form-control" placeholder="VD: 15 (Tương ứng 15%)">
         </div>
 
         <div class="input-group">
             <label class="input-label">Phụ cấp thâm niên vượt khung (%):</label>
-            <input type="text" id="vuotKhung" class="form-control" placeholder="VD: 5 (Tương ứng 5%)">
+            <input type="text" inputmode="decimal" id="vuotKhung" class="form-control" placeholder="VD: 5 (Tương ứng 5%)">
         </div>
 
         <div class="input-group">
             <label class="input-label">Hệ số Phụ cấp khu vực (Nếu có):</label>
-            <input type="text" id="pcKhuVuc" class="form-control" placeholder="VD: 0.1 (Nhập 0 nếu không có)">
+            <input type="text" inputmode="decimal" id="pcKhuVuc" class="form-control" placeholder="VD: 0.1 (Nhập 0 nếu không có)">
         </div>
 
         <div class="input-group">
@@ -257,7 +257,7 @@
 
         <div class="input-group">
             <label class="input-label">Phụ cấp ưu đãi cụ thể (%):</label>
-            <input type="number" step="0.01" id="uuDaiRate" class="form-control" value="40" disabled>
+            <input type="text" inputmode="decimal" id="uuDaiRate" class="form-control" value="40" disabled>
         </div>
 
         <button class="calc-btn" onclick="calculate()">TÍNH LƯƠNG</button>
