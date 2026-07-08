@@ -153,6 +153,51 @@
             margin-top: 1.5rem;
             line-height: 1.5;
         }
+
+        /* Giao diện Mobile */
+        @media (max-width: 600px) {
+            body {
+                padding: 0;
+            }
+            .app-container {
+                border: none;
+                border-radius: 0;
+                min-height: 100vh;
+                padding: 1.5rem 1rem;
+            }
+            .title {
+                font-size: 1.8rem;
+            }
+            .result-card {
+                padding: 1.25rem 1rem;
+            }
+            .result-row {
+                font-size: 0.95rem;
+                padding-bottom: 0.6rem;
+                margin-bottom: 0.6rem;
+            }
+            .result-row.net {
+                font-size: 1.3rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.5rem;
+            }
+            .result-row.net span:last-child {
+                text-align: center;
+            }
+            .input-label {
+                font-size: 0.8rem;
+            }
+            .form-control {
+                font-size: 1rem; /* Tăng lên 1rem (16px) để iOS không tự zoom khi nhập */
+                padding: 0.75rem;
+            }
+            .calc-btn {
+                padding: 1rem;
+                font-size: 1.1rem;
+            }
+        }
     </style>
 </head>
 <body>
